@@ -45,7 +45,7 @@ class UsefulFocusParent extends StatefulWidget {
   final FocusOnKeyCallback? onKey;
   /// 自定义处理焦点事件
   final FocusNode? focusNode;
-  /// 防重复点击的间隔时间，默认 500ms
+  /// 防重复点击的间隔时间，默认 1000ms
   final int intervalMillSeconds;
 
   @override
