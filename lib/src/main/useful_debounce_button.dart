@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
+/// 默认间隔时间
+const _defaultIntervalMillSeconds = 1000;
+
 /// 用于防止重复点击的按钮
 ///
 /// 该组件用于避免两个组件之间的点击事件间隔互相影响，各自独立
-class DebounceButton extends StatefulWidget {
-  const DebounceButton({
+class UsefulDebounceButton extends StatefulWidget {
+  const UsefulDebounceButton({
     Key? key,
     required this.child,
     required this.onClickListener,
-    this.intervalMillSeconds = 1000,
+    this.intervalMillSeconds = _defaultIntervalMillSeconds,
     this.margin,
   }) : super(key: key);
 
@@ -22,10 +25,10 @@ class DebounceButton extends StatefulWidget {
   final EdgeInsetsGeometry? margin;
 
   @override
-  State<DebounceButton> createState() => _DebounceButtonState();
+  State<UsefulDebounceButton> createState() => _UsefulDebounceButtonState();
 }
 
-class _DebounceButtonState extends State<DebounceButton> {
+class _UsefulDebounceButtonState extends State<UsefulDebounceButton> {
   // 上次点击生效的时间
   int _currentLastTakeEffectClickTime = 0;
 
@@ -56,16 +59,16 @@ int _lastTakeEffectClickTime = 0;
 /// 防止重复点击
 ///
 /// [func] 要执行的方法
-/// [intervalMillSeconds] 防止重复点击的间隔
-/// [lastTakeEffectClickTime] 用于自定义上次点击生效的时间，无需传递此值
+/// [intervalMillSeconds] 防止重复点击的间隔，毫秒
+/// [lastTakeEffectClickTime] 用于自定义上次点击生效的时间，一般无需传递此值
 ///
-/// 直接使用从方法会导致一个问题：例如页面A中的按钮，使用了此方法，
-/// 点击A按钮，跳转到了页面B，此时页面B按钮如果也使用了此方法，并且此时距离页面A的 [intervalMillSeconds] 还没有结束，
-/// 就会导致页面B按钮暂时无法点击，直接 [intervalMillSeconds] 过时
+/// ⚠️ 直接使用从方法会导致一个问题：例如页面A中的按钮，使用了此方法，点击A按钮，跳转到了页面B，
+/// 页面B按钮如果也使用了此方法，并且此时距离页面A的 [intervalMillSeconds] 还没有结束，
+/// 就会导致页面B按钮暂时无法点击，直到 [intervalMillSeconds] 过时
 ///
-/// 简单来说就是此方法会导致两个组件间相互影响，若要避免此影响，请使用 [DebounceButton]
+/// 简单来说就是此方法会导致两个组件间相互影响，若要避免此影响，请使用 [UsefulDebounceButton]
 int preventDoubleClick(VoidCallback func,{
-  required int intervalMillSeconds,
+  int intervalMillSeconds = _defaultIntervalMillSeconds,
   int? lastTakeEffectClickTime
 }) {
   final currentTime = DateTime.now().millisecondsSinceEpoch;
