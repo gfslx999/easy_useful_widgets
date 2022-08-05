@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// 默认间隔时间
-const _defaultIntervalMillSeconds = 1000;
+const defaultIntervalMillSeconds = 500;
 
 /// 用于防止重复点击的按钮
 ///
@@ -9,9 +9,9 @@ const _defaultIntervalMillSeconds = 1000;
 class UsefulDebounceButton extends StatefulWidget {
   const UsefulDebounceButton({
     Key? key,
-    required this.child,
     required this.onClickListener,
-    this.intervalMillSeconds = _defaultIntervalMillSeconds,
+    required this.child,
+    this.intervalMillSeconds = defaultIntervalMillSeconds,
     this.margin,
   }) : super(key: key);
 
@@ -68,7 +68,7 @@ int _lastTakeEffectClickTime = 0;
 ///
 /// 简单来说就是此方法会导致两个组件间相互影响，若要避免此影响，请使用 [UsefulDebounceButton]
 int preventDoubleClick(VoidCallback func,{
-  int intervalMillSeconds = _defaultIntervalMillSeconds,
+  int intervalMillSeconds = defaultIntervalMillSeconds,
   int? lastTakeEffectClickTime
 }) {
   final currentTime = DateTime.now().millisecondsSinceEpoch;
