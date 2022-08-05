@@ -5,25 +5,29 @@ import 'package:flutter/services.dart';
 
 /// 焦点容器
 ///
-/// 当前组件默认提供带焦点时边框样式，
+/// 当前组件默认提供带焦点时边框样式，最简单的使用：
+/// 仅传递 [child] 、[autoFocus]、[onClickListener]
 class UsefulFocusParent extends StatefulWidget {
-  const UsefulFocusParent({
+  UsefulFocusParent({
     Key? key,
     this.child,
     this.usefulFocusBuilder,
     this.autoFocus = false,
+    this.onClickListener,
     this.focusNode,
     this.borderRadius = 8,
     this.borderColor = Colors.lightBlue,
     this.paddingToBorder,
     this.margin,
-    this.onClickListener,
     this.onKey,
     this.intervalMillSeconds = 500,
-  }) : super(key: key);
+  }) : super(key: key) {
+    assert(child != null || usefulFocusBuilder != null);
+  }
 
   /// 是否自动获取焦点
   final bool autoFocus;
+  /// 子组件，如传入 [usefulFocusBuilder]，[child] 将失效
   final Widget? child;
   /// 回调是否有焦点的一个组件，如果你想自定义焦点样式ui，请使用这个;
   /// 使用此事件，点击事件也需要自己处理，这里只负责回调是否有焦点
