@@ -18,6 +18,7 @@ class DebounceButton extends StatefulWidget {
   final VoidCallback onClickListener;
   /// 间隔时长，单位：毫秒
   final int intervalMillSeconds;
+  /// 当前组件的边距，默认：EdgeInsets.symmetric(vertical: 10)
   final EdgeInsetsGeometry? margin;
 
   @override
