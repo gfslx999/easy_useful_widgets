@@ -22,7 +22,7 @@ class UsefulFocusParent extends StatefulWidget {
     this.onKey,
     this.intervalMillSeconds = 500,
   }) : super(key: key) {
-    assert(child != null || usefulFocusBuilder != null);
+    assert(child != null || usefulFocusBuilder != null, "child and usefulFocusBuilder, you must chose on of them.");
   }
 
   /// 是否自动获取焦点
