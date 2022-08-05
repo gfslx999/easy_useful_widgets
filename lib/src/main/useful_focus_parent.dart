@@ -10,10 +10,10 @@ import 'package:flutter/services.dart';
 class UsefulFocusParent extends StatefulWidget {
   UsefulFocusParent({
     Key? key,
+    required this.onClickListener,
     this.child,
-    this.usefulFocusBuilder,
+    this.childBuilder,
     this.autoFocus = false,
-    this.onClickListener,
     this.focusNode,
     this.borderRadius = 8,
     this.borderColor = Colors.lightBlue,
@@ -22,16 +22,15 @@ class UsefulFocusParent extends StatefulWidget {
     this.onKey,
     this.intervalMillSeconds = 500,
   }) : super(key: key) {
-    assert(child != null || usefulFocusBuilder != null, "child and usefulFocusBuilder, you must chose on of them.");
+    assert(child != null || childBuilder != null, "child and usefulFocusBuilder, you must chose on of them.");
   }
 
   /// 是否自动获取焦点
   final bool autoFocus;
-  /// 子组件，如传入 [usefulFocusBuilder]，[child] 将失效
+  /// 子组件，如传入 [childBuilder]，[child] 将失效
   final Widget? child;
-  /// 回调是否有焦点的一个组件，如果你想自定义焦点样式ui，请使用这个;
-  /// 使用此事件，点击事件也需要自己处理，这里只负责回调是否有焦点
-  final UsefulFocusBuilder? usefulFocusBuilder;
+  /// 回调是否有焦点的一个组件，如果你想自定义焦点样式ui，请使用这个
+  final UsefulFocusBuilder? childBuilder;
   /// 边框圆角
   final double borderRadius;
   /// 边框颜色
@@ -83,8 +82,14 @@ class _UsefulFocusParentState extends State<UsefulFocusParent> {
       child: Builder(builder: (context) {
         final hasFocus = Focus.of(context).hasFocus || (widget.focusNode?.hasFocus ?? false);
         // 如果 usefulFocusBuilder 不为空，代表用户需要自定义UI样式
-        if (widget.usefulFocusBuilder != null) {
-          return widget.usefulFocusBuilder!(hasFocus);
+        if (widget.childBuilder != null) {
+          return InkWell(
+            canRequestFocus: false,
+            onTap: () {
+              executeOnClick();
+            },
+            child: widget.childBuilder!(hasFocus),
+          );
         }
         final border = Border.all(
           color: hasFocus ? widget.borderColor : Colors.transparent,
