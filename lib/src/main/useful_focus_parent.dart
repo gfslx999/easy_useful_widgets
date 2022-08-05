@@ -11,16 +11,16 @@ class UsefulFocusParent extends StatefulWidget {
   UsefulFocusParent({
     Key? key,
     required this.onClickListener,
+    required this.autoFocus,
     this.child,
     this.childBuilder,
-    this.autoFocus = false,
     this.focusNode,
     this.borderRadius = 8,
     this.borderColor = Colors.lightBlue,
     this.paddingToBorder,
     this.margin,
     this.onKey,
-    this.intervalMillSeconds = 500,
+    this.intervalMillSeconds = 1000,
   }) : super(key: key) {
     assert(child != null || childBuilder != null, "child and usefulFocusBuilder, you must chose on of them.");
   }

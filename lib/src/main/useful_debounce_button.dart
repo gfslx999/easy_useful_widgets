@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// 默认间隔时间
-const defaultIntervalMillSeconds = 500;
+const _defaultIntervalMillSeconds = 1000;
 
 /// 用于防止重复点击的按钮
 ///
@@ -11,7 +11,7 @@ class UsefulDebounceButton extends StatefulWidget {
     Key? key,
     required this.onClickListener,
     required this.child,
-    this.intervalMillSeconds = defaultIntervalMillSeconds,
+    this.intervalMillSeconds = _defaultIntervalMillSeconds,
     this.margin,
   }) : super(key: key);
 
@@ -19,9 +19,9 @@ class UsefulDebounceButton extends StatefulWidget {
   final Widget child;
   /// 点击回调
   final VoidCallback onClickListener;
-  /// 间隔时长，单位：毫秒
+  /// 间隔时长，默认： [_defaultIntervalMillSeconds]
   final int intervalMillSeconds;
-  /// 当前组件的边距，默认：EdgeInsets.symmetric(vertical: 10)
+  /// 当前组件的边距，默认为空
   final EdgeInsetsGeometry? margin;
 
   @override
@@ -35,7 +35,7 @@ class _UsefulDebounceButtonState extends State<UsefulDebounceButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: widget.margin ?? const EdgeInsets.symmetric(vertical: 10),
+      margin: widget.margin,
       child: InkWell(
         splashFactory: NoSplash.splashFactory,
         onTap: () {
@@ -68,7 +68,7 @@ int _lastTakeEffectClickTime = 0;
 ///
 /// 简单来说就是此方法会导致两个组件间相互影响，若要避免此影响，请使用 [UsefulDebounceButton]
 int preventDoubleClick(VoidCallback func,{
-  int intervalMillSeconds = defaultIntervalMillSeconds,
+  int intervalMillSeconds = _defaultIntervalMillSeconds,
   int? lastTakeEffectClickTime
 }) {
   final currentTime = DateTime.now().millisecondsSinceEpoch;
