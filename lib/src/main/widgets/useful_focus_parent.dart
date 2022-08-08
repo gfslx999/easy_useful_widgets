@@ -1,5 +1,3 @@
-
-import 'package:easy_useful_widgets/easy_useful_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -20,7 +18,6 @@ class UsefulFocusParent extends StatefulWidget {
     this.paddingToBorder,
     this.margin,
     this.onKey,
-    this.intervalMillSeconds = 1000,
   }) : super(key: key) {
     assert(child != null || childBuilder != null, "child and usefulFocusBuilder, you must chose on of them.");
   }
@@ -40,13 +37,11 @@ class UsefulFocusParent extends StatefulWidget {
   /// 边框到外部的距离
   final EdgeInsetsGeometry? margin;
   /// 点击事件回调
-  final VoidCallback? onClickListener;
+  final VoidCallback onClickListener;
   /// 自定义处理焦点事件
   final FocusOnKeyCallback? onKey;
   /// 自定义处理焦点事件
   final FocusNode? focusNode;
-  /// 防重复点击的间隔时间，默认 1000ms
-  final int intervalMillSeconds;
 
   @override
   State<StatefulWidget> createState() => _UsefulFocusParentState();
@@ -54,18 +49,14 @@ class UsefulFocusParent extends StatefulWidget {
 
 class _UsefulFocusParentState extends State<UsefulFocusParent> {
 
-  /// 上次点击生效的时间
-  int _lastTakeEffectClickTime = 0;
-
   @override
   Widget build(BuildContext context) {
     FocusOnKeyCallback onKeyCallback;
     // 如果未指定，则只处理确认事件
     if (widget.onKey == null) {
       onKeyCallback = (node, event) {
-        if (widget.onClickListener != null &&
-            event is RawKeyUpEvent && event.logicalKey == LogicalKeyboardKey.select) {
-          executeOnClick();
+        if (event is RawKeyUpEvent && event.logicalKey == LogicalKeyboardKey.select) {
+          widget.onClickListener();
           return KeyEventResult.handled;
         }
         return KeyEventResult.ignored;
@@ -83,22 +74,22 @@ class _UsefulFocusParentState extends State<UsefulFocusParent> {
         final hasFocus = Focus.of(context).hasFocus || (widget.focusNode?.hasFocus ?? false);
         // 如果 usefulFocusBuilder 不为空，代表用户需要自定义UI样式
         if (widget.childBuilder != null) {
-          return InkWell(
-            canRequestFocus: false,
-            onTap: () {
-              executeOnClick();
-            },
-            child: widget.childBuilder!(hasFocus),
+          return Container(
+            margin: widget.margin,
+            child: InkWell(
+              canRequestFocus: false,
+              onTap: widget.onClickListener,
+              child: widget.childBuilder!(hasFocus),
+            ),
           );
         }
+
         final border = Border.all(
           color: hasFocus ? widget.borderColor : Colors.transparent,
         );
         return InkWell(
           canRequestFocus: false,
-          onTap: () {
-            executeOnClick();
-          },
+          onTap: widget.onClickListener,
           child: Container(
             margin: widget.margin,
             decoration: BoxDecoration(
@@ -112,15 +103,6 @@ class _UsefulFocusParentState extends State<UsefulFocusParent> {
           ),
         );
       }),
-    );
-  }
-
-  /// 执行点击操作
-  void executeOnClick() {
-    _lastTakeEffectClickTime = preventDoubleClick(
-        widget.onClickListener!,
-        intervalMillSeconds: widget.intervalMillSeconds,
-        lastTakeEffectClickTime: _lastTakeEffectClickTime
     );
   }
 
