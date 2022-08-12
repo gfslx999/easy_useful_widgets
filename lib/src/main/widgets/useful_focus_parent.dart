@@ -70,8 +70,6 @@ class _UsefulFocusParentState extends State<UsefulFocusParent> {
       onKeyCallback = widget.onKey!;
     }
 
-
-
     return Focus(
       canRequestFocus: true,
       autofocus: widget.autoFocus,

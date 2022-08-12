@@ -4,9 +4,33 @@
 
 ## Getting started
 
+`详细API请参考源码...`
+
 ### 一、焦点组件
 
-#### 1.UsefulFocusParent
+#### 1.UsefulFocusButton
+
+焦点按钮组件，基于 `UsefulFocusParent` 进行封装
+
+``` kotlin
+  UsefulFocusButton(
+    autoFocus: true,
+    onClickListener: () {
+        print("我被点击了...");
+    },
+    textContent: '我是按钮',
+    focusStyleModel: FocusStyleModel(
+        focusBackgroundColor: Colors.blue,
+        unFocusBackgroundColor: Colors.grey,
+        focusTextColor: Colors.white,
+        radius: 8,
+        padding: EdgeInsetsGeometry.all(5)
+        ...
+    )
+  );
+```
+
+#### 2.UsefulFocusParent
 
 焦点容器组件，默认提供线边框焦点样式，可自定义选择焦点样式，高度定制化
 
@@ -34,25 +58,6 @@
               ),
             ),
           ),
-  );
-```
-
-#### 2.UsefulFocusButton
-
-焦点按钮组件，基于 `UsefulFocusParent` 进行封装
-
-``` kotlin
-  UsefulFocusButton(
-    autoFocus: true,
-    onClickListener: () {
-        print("我被点击了...");
-    },
-    textContent: '我是按钮',
-    focusStyleModel: FocusStyleModel(
-        focusBackgroundColor: Colors.blue,
-        unFocusBackgroundColor: Colors.grey,
-        ...
-    )
   );
 ```
 
