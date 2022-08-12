@@ -1,39 +1,88 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+## 简介
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+一个为Flutter端提供简便、易用组件的库
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+### 一、焦点组件
 
-## Usage
+#### 1.UsefulFocusParent
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+焦点容器组件，默认提供线边框焦点样式，可自定义选择焦点样式，高度定制化
 
-```dart
-const like = 'sample';
+``` kotlin
+  UsefulFocusParent(
+    autoFocus: true,
+    onClickListener: () {
+        print("我被点击了...");
+    },
+    child: Container(
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.circular(focusStyleModel.radius),
+            ),
+            child: Center(
+              child: Padding(
+                padding: focusStyleModel.padding,
+                child: Text(
+                  textContent,
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: focusStyleModel.fontSize,
+                  ),
+                ),
+              ),
+            ),
+          ),
+  );
 ```
 
-## Additional information
+#### 2.UsefulFocusButton
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+焦点按钮组件，基于 `UsefulFocusParent` 进行封装
+
+``` kotlin
+  UsefulFocusButton(
+    autoFocus: true,
+    onClickListener: () {
+        print("我被点击了...");
+    },
+    textContent: '我是按钮',
+    focusStyleModel: FocusStyleModel(
+        focusBackgroundColor: Colors.blue,
+        unFocusBackgroundColor: Colors.grey,
+        ...
+    )
+  );
+```
+
+### 二、功能API
+
+#### 1.debounce
+
+防重复点击/防抖/节流
+
+``` kotlin
+   // ✅正确示例
+   // [intervalDuration] 间隔多长时间执行，默认1秒
+   InkWell(
+     onTap: debounce(() {
+      // 这里最快的回调频率为 1秒/次
+      // todo something
+     }, intervalDuration: const Duration(seconds: 1)),
+     child: const Text('Test Click'),
+   );
+```
+
+``` kotlin
+   // ‍❌错误示例
+   // 这种写法会失去闭包的特性，导致该功能失效
+   InkWell(
+     onTap: () {
+        debounce(() {
+            // todo something
+        }, intervalDuration: const Duration(seconds: 1))
+     },
+     child: const Text('Test Click'),
+   );
+```
